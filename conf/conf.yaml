@@ -1,0 +1,3 @@
+api:
+    jwt_key: 89js82js72
+    jwt_exp: 3600
