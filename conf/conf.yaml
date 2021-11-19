@@ -1,3 +1,10 @@
 api:
-    jwt_key: 89js82js72
-    jwt_exp: 3600
+  jwt_key: 89js82js72
+  jwt_exp: 3600
+
+mysql:
+  host: .
+  post: 3306
+  db_name: go-summer
+  user: test
+  password: 123456

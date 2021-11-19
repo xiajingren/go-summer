@@ -12,11 +12,18 @@ type Config struct {
 		Jwt_Key []byte
 		Jwt_Exp int64
 	}
+	MySql struct {
+		Host,
+		Post,
+		Db_Name,
+		User,
+		Password string
+	}
 }
 
 var Conf Config
 
-func init() {
+func InitConfig() {
 	viper.SetConfigName("conf")    // name of config file (without extension)
 	viper.SetConfigType("yaml")    // REQUIRED if the config file does not have the extension in the name
 	viper.AddConfigPath("../conf") // optionally look for config in the working directory
@@ -37,4 +44,10 @@ func init() {
 func setConfig() {
 	Conf.Api.Jwt_Key = []byte(viper.GetString("api.jwt_key"))
 	Conf.Api.Jwt_Exp = viper.GetInt64("api.jwt_exp")
+
+	Conf.MySql.Host = viper.GetString("mysql.host")
+	Conf.MySql.Post = viper.GetString("mysql.post")
+	Conf.MySql.Db_Name = viper.GetString("mysql.db_name")
+	Conf.MySql.User = viper.GetString("mysql.user")
+	Conf.MySql.Password = viper.GetString("mysql.password")
 }
