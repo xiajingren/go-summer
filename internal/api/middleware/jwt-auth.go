@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/xiajingren/go-summer/internal/api/consts"
-	"github.com/xiajingren/go-summer/internal/api/model"
+	"github.com/xiajingren/go-summer/internal/api/dto"
 	"github.com/xiajingren/go-summer/internal/api/service"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +17,7 @@ func JwtAuth() gin.HandlerFunc {
 
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" || !strings.HasPrefix(authHeader, authSchema) {
-			c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
 
@@ -25,15 +25,15 @@ func JwtAuth() gin.HandlerFunc {
 
 		claims, valid, err := service.NewJWTService().ParseTokenWithClaims(tokenString)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
 		if !valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
 
-		currentUser := model.NewCurrentUser(claims.Username)
+		currentUser := dto.NewCurrentUser(claims.Username)
 		c.Set(consts.CURRENT_USER, currentUser)
 
 		c.Next()

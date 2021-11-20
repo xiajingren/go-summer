@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	store.InitDatabase()
 	conf.InitConfig()
+	store.InitDatabase()
 	api.Run()
 }

@@ -1,4 +1,6 @@
 api:
+  gin_mode: debug
+  gin_port: 8080
   jwt_key: 89js82js72
   jwt_exp: 3600
 

@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	"github.com/xiajingren/go-summer/conf"
 	"github.com/xiajingren/go-summer/internal/api/controller"
 	"github.com/xiajingren/go-summer/internal/api/middleware"
 
@@ -10,18 +11,19 @@ import (
 )
 
 func Run() {
+	gin.SetMode(conf.Conf.Api.Gin_Mode)
 	r := gin.New()
 
-	r.NoMethod(func(c *gin.Context) {
-		c.JSON(http.StatusMethodNotAllowed, "MethodNotAllowed")
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
 	})
 
-	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	r.Use(gin.Logger())
 
 	registerRouter(r)
 
-	r.Run()
+	r.Run(":" + conf.Conf.Api.Gin_Port)
 }
 
 var (
@@ -35,6 +37,10 @@ func registerRouter(r *gin.Engine) {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/login", authController.Login)
+		}
+		user := v1.Group("/users")
+		{
+			user.POST("/register", userController.Register)
 		}
 	}
 

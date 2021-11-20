@@ -10,17 +10,11 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-type JWTService interface {
-	GenerateToken(username string) (string, error)
-	/// returns claims,valid,error
-	ParseTokenWithClaims(tokenString string) (*JWTClaims, bool, error)
-}
+type JWTService struct{}
 
 func NewJWTService() JWTService {
-	return jwtService{}
+	return JWTService{}
 }
-
-type jwtService struct{}
 
 type JWTClaims struct {
 	Username string
@@ -36,13 +30,13 @@ func newJWTClaims(username string) (claim JWTClaims) {
 	return
 }
 
-func (service jwtService) GenerateToken(username string) (string, error) {
+func (service JWTService) GenerateToken(username string) (string, error) {
 	claim := newJWTClaims(username)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 	return token.SignedString(conf.Conf.Api.Jwt_Key)
 }
 
-func (service jwtService) ParseTokenWithClaims(tokenString string) (*JWTClaims, bool, error) {
+func (service JWTService) ParseTokenWithClaims(tokenString string) (*JWTClaims, bool, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return conf.Conf.Api.Jwt_Key, nil
 	})
@@ -55,5 +49,5 @@ func (service jwtService) ParseTokenWithClaims(tokenString string) (*JWTClaims, 
 		return claims, token.Valid, nil
 	}
 
-	return nil, false, errors.New("ParseWithClaims error")
+	return nil, false, errors.New("an error occurred while parse with the claims")
 }

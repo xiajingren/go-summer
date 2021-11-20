@@ -1,4 +1,4 @@
-package response
+package dto
 
 import (
 	"github.com/xiajingren/go-summer/conf"
@@ -13,8 +13,8 @@ type TokenResponse struct {
 	ExpiresIn    int64  `json:"expires_in"`
 }
 
-func NewTokenResponse(access_token string) TokenResponse {
-	return TokenResponse{
+func NewTokenResponse(access_token string) *TokenResponse {
+	return &TokenResponse{
 		AccessToken:  access_token,
 		RefreshToken: utils.NewBase64RandomString(),
 		TokenType:    consts.AUTH_SCHEMA,
