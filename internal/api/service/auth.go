@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/xiajingren/go-summer/internal/api/dto"
+	"github.com/xiajingren/go-summer/pkg/utils"
 	"github.com/xiajingren/go-summer/store"
 )
 
@@ -31,7 +32,7 @@ func (service AuthService) Login(req dto.LoginRequest) (*dto.TokenResponse, erro
 		return nil, errors.New("wrong user name or password")
 	}
 
-	if user.Password != req.Password {
+	if !utils.ComparePasswords(user.Password, []byte(req.Password)) {
 		return nil, errors.New("wrong user name or password")
 	}
 

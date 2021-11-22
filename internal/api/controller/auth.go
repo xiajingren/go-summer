@@ -17,14 +17,14 @@ func NewAuthController() AuthController {
 	return AuthController{authService: service.NewAuthService()}
 }
 
-func (controller AuthController) Login(c *gin.Context) {
+func (ctl AuthController) Login(c *gin.Context) {
 	var loginRequest dto.LoginRequest
 	if err := c.ShouldBind(&loginRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	resp, err := controller.authService.Login(loginRequest)
+	resp, err := ctl.authService.Login(loginRequest)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -32,7 +32,7 @@ func (controller AuthController) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func (controller AuthController) RefreshToken(c *gin.Context) {
+func (ctl AuthController) Refresh(c *gin.Context) {
 	var refreshRequest dto.RefreshRequest
 	if err := c.ShouldBind(&refreshRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

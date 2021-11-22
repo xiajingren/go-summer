@@ -18,14 +18,14 @@ func NewUserController() UserController {
 	}
 }
 
-func (controller UserController) Register(c *gin.Context) {
+func (ctl UserController) Register(c *gin.Context) {
 	var registerRequest dto.RegisterRequest
 	if err := c.ShouldBind(&registerRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := controller.userService.Register(registerRequest)
+	err := ctl.userService.Register(registerRequest)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -33,6 +33,6 @@ func (controller UserController) Register(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (controller UserController) GetUsers(c *gin.Context) {
+func (ctl UserController) GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, nil)
 }
